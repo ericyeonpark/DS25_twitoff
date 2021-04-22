@@ -1,12 +1,13 @@
-'''SQLAlchemy User and Tweet models for our database'''
+"""SQLAlchemy User and Tweet models for out database"""
 from flask_sqlalchemy import SQLAlchemy
 
 # creates a DB Object from SQLAlchemy class
 DB = SQLAlchemy()
 
+
 # Making a User table using SQLAlchemy
 class User(DB.Model):
-    '''Creates a User Table with SQLAlchemy'''
+    """Creates a User Table with SQlAlchemy"""
     # id column
     id = DB.Column(DB.BigInteger, primary_key=True)
     # name column
@@ -15,25 +16,25 @@ class User(DB.Model):
     newest_tweet_id = DB.Column(DB.BigInteger)
 
     def __repr__(self):
-        return '<User: {}>'.format(self.name)
+        return "<User: {}>".format(self.name)
 
 
 class Tweet(DB.Model):
-    '''Keeps track of tweets for each user'''
+    """Keeps track of Tweets for each user"""
     id = DB.Column(DB.BigInteger, primary_key=True)
-    text = DB.Column(DB.Unicode(300)) # allows for text and links
+    text = DB.Column(DB.Unicode(300))  # allows for text and links
     vect = DB.Column(DB.PickleType, nullable=False)
     user_id = DB.Column(DB.BigInteger, DB.ForeignKey(
-        'user.id'), nullable = False)
+        'user.id'), nullable=False)
     user = DB.relationship('User', backref=DB.backref('tweets', lazy=True))
 
     def __repr__(self):
         return "<Tweet: {}>".format(self.text)
 
 
-CREATE_USER_TABLE_SQL = '''
-    CREATE TABLE IS NOT EXIST user(
-        id INT PRIMARY,
-        name STRING NOT NULL
-    )
-'''
+CREATE_USER_TABLE_SQL = """
+  CREATE TABLE IF NOT EXIST user (
+    id INT PRIMARY,
+    name STRING NOT NULL
+  );
+"""

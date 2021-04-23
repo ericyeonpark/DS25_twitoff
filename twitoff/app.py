@@ -4,7 +4,8 @@ from flask import Flask, render_template, request
 from .predict import predict_user
 from .models import DB, User
 from .twitter import add_or_update_user
-
+import os
+import re
 
 def create_app():
     """
